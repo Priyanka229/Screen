@@ -1,12 +1,18 @@
 package com.example.noone.screens;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ListItem {
+    @SerializedName("name")
     String titlename;
+    @SerializedName("desc")
     private String desc;
-    private int img;
+    @SerializedName("url")
+    private String img;
+    @SerializedName("color")
     private String backColor;
 
-    public ListItem (String title, int url, String description, String bcolor) {
+    public ListItem (String title, String url, String description, String bcolor) {
         this.titlename = title;
         this.img = url;
         this.desc = description;
@@ -23,11 +29,11 @@ public class ListItem {
         this.titlename = titlename;
     }
 
-    public int  getImg() {
+    public String  getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 

@@ -7,22 +7,33 @@ import java.util.List;
 
 public class ListAdapter extends FragmentPagerAdapter {
 
-    List<ListItem> listItemList;
+    List<ListItem> mListItemList;
+
+    public void setDataList(List<ListItem> list) {
+        this.mListItemList = list;
+    }
     public ListAdapter(FragmentManager fm) {
         super(fm);
     }
 
 
+
     @Override
     public int getCount() {
-        return listItemList.size();
+        int count;
+        if(mListItemList != null){
+            count = mListItemList.size();
+        }else {
+            count = 0;
+        }
+        return count;
     }
 
     @Override
     public Fragment getItem(int position) {
        // ListItemFragment listItemFragment = new ListItemFragment(listItemList.get(position));
         ListItemFragment listItemFragment = new ListItemFragment();
-        listItemFragment.listItem = listItemList.get(position);
+        listItemFragment.listItem = mListItemList.get(position);
         return listItemFragment;
     }
 

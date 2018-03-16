@@ -1,7 +1,6 @@
 package com.example.noone.screens;
 
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 public class ListItemFragment extends Fragment {
 
@@ -39,9 +40,12 @@ public class ListItemFragment extends Fragment {
 
 
             title.setText(listItem.getTitlename());
-            img.setBackgroundResource(listItem.getImg());
+            //img.setBackgroundResource(listItem.getImg());
             desc.setText(listItem.getDesc());
             bcolor.setBackgroundColor(Color.parseColor(listItem.getBackColor()));
+            Glide.with(this)
+                    .load(listItem.getImg())
+                    .into(img);
         }
     }
 }

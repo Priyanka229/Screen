@@ -11,7 +11,13 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MyFragment extends Fragment {
+
+    ListAdapter mListAdapter;
 
     List<ListItem> listItemList;
 
@@ -33,17 +39,51 @@ public class MyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ViewPager viewPager = view.findViewById(R.id.view_pager);
 
-        ListItem listItem = new ListItem();
-        listItem.titlename = "Daily Workout";
-        listItem.setImg(R.drawable.exercise);
-        listItem.setDesc("Set your daily workout routine by the help of trainer");
-        listItem.setBackColor("#f4b241");
-        listItemList.add(listItem);
+//        ListItem listItem = new ListItem();
+//        listItem.titlename = "Daily Workout";
+//        listItem.setImg(R.drawable.exercise);
+//        listItem.setDesc("Set your daily workout routine by the help of trainer");
+//        listItem.setBackColor("#f4b241");
+//        listItemList.add(listItem);
+//
+//        listItemList.add(new ListItem("Meditation Techniques", R.drawable.meditation, "Learn about the different meditation techniques and practice them", "#16bc7d"));
 
-        listItemList.add(new ListItem("Meditation Techniques", R.drawable.meditation, "Learn about the different meditation techniques and practice them", "#16bc7d"));
+        mListAdapter = new ListAdapter(getChildFragmentManager());
+       // mListAdapter.listItemList = listItemList;
+        viewPager.setAdapter(mListAdapter);
+    }
 
-        ListAdapter listAdapter = new ListAdapter(getChildFragmentManager());
-        listAdapter.listItemList = listItemList;
-        viewPager.setAdapter(listAdapter);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        makeApiCall();
+    }
+
+    private void makeApiCall(){
+        Call<ListData> call = ListItemClient.getListOfItemApi().getList();
+        call.enqueue(new Callback<ListData>() {
+            @Override
+            public void onResponse(Call<ListData> call, Response<ListData> response) {
+//                ListData listData = response.body();
+//                for (int i = 0; i < listData.dataList.size(); i++) {
+//                    System.out.println(listData.getDataList().get(i).getTitlename());
+//                }
+                sendDataToAdapter(response.body().dataList);
+
+            }
+
+            @Override
+            public void onFailure(Call<ListData> call, Throwable t) {
+                System.out.println("error");
+            }
+        });
+    }
+
+    private void sendDataToAdapter (List<ListItem> listItems){
+        if(mListAdapter != null && listItems != null){
+            mListAdapter.setDataList(listItems);
+            mListAdapter.notifyDataSetChanged();
+        }
     }
 }
